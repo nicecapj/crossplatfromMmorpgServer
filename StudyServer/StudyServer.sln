@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StudyServer", "StudyServer\StudyServer.vcxproj", "{F06C9D29-3338-452A-8A79-D3AE1A2D1BB5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SyncTestEchoServer", "SyncTestEchoServer\SyncTestEchoServer.vcxproj", "{679D4A30-0997-4281-8A71-A6805D552951}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SyncTestEchoClient", "SyncTestEchoClient\SyncTestEchoClient.vcxproj", "{6B845F51-5427-44B9-93A0-FBF9E9F6FF13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,22 @@ Global
 		{F06C9D29-3338-452A-8A79-D3AE1A2D1BB5}.Release|x64.Build.0 = Release|x64
 		{F06C9D29-3338-452A-8A79-D3AE1A2D1BB5}.Release|x86.ActiveCfg = Release|Win32
 		{F06C9D29-3338-452A-8A79-D3AE1A2D1BB5}.Release|x86.Build.0 = Release|Win32
+		{679D4A30-0997-4281-8A71-A6805D552951}.Debug|x64.ActiveCfg = Debug|x64
+		{679D4A30-0997-4281-8A71-A6805D552951}.Debug|x64.Build.0 = Debug|x64
+		{679D4A30-0997-4281-8A71-A6805D552951}.Debug|x86.ActiveCfg = Debug|Win32
+		{679D4A30-0997-4281-8A71-A6805D552951}.Debug|x86.Build.0 = Debug|Win32
+		{679D4A30-0997-4281-8A71-A6805D552951}.Release|x64.ActiveCfg = Release|x64
+		{679D4A30-0997-4281-8A71-A6805D552951}.Release|x64.Build.0 = Release|x64
+		{679D4A30-0997-4281-8A71-A6805D552951}.Release|x86.ActiveCfg = Release|Win32
+		{679D4A30-0997-4281-8A71-A6805D552951}.Release|x86.Build.0 = Release|Win32
+		{6B845F51-5427-44B9-93A0-FBF9E9F6FF13}.Debug|x64.ActiveCfg = Debug|x64
+		{6B845F51-5427-44B9-93A0-FBF9E9F6FF13}.Debug|x64.Build.0 = Debug|x64
+		{6B845F51-5427-44B9-93A0-FBF9E9F6FF13}.Debug|x86.ActiveCfg = Debug|Win32
+		{6B845F51-5427-44B9-93A0-FBF9E9F6FF13}.Debug|x86.Build.0 = Debug|Win32
+		{6B845F51-5427-44B9-93A0-FBF9E9F6FF13}.Release|x64.ActiveCfg = Release|x64
+		{6B845F51-5427-44B9-93A0-FBF9E9F6FF13}.Release|x64.Build.0 = Release|x64
+		{6B845F51-5427-44B9-93A0-FBF9E9F6FF13}.Release|x86.ActiveCfg = Release|Win32
+		{6B845F51-5427-44B9-93A0-FBF9E9F6FF13}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
