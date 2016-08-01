@@ -14,7 +14,7 @@ int main()
 {
 	boost::asio::io_service ios;
 	tcp::endpoint endpoint(tcp::v4(), SERVER_PORT);
-	
+
 	//old listen flow
 	tcp::acceptor acceptor(ios);
 	acceptor.open(endpoint.protocol());
@@ -25,8 +25,15 @@ int main()
 	//tcp::acceptor acceptor(ios, endpoint);	//new listen flow
 
 
+	boost::system::error_code error;
 	tcp::socket socket(ios);
-	acceptor.accept(socket);
+	acceptor.accept(socket, error);
+	if (error)
+	{
+		std::cout << "error id : " << error.value() << " error message : " << error.message() << std::endl;
+		return -1;
+	}
+
 
 	std::cout << "connected Client" << std::endl;
 
@@ -35,8 +42,7 @@ int main()
 	{
 		std::array<char, 128> buff;
 		buff.assign(0);
-
-		boost::system::error_code error;
+		
 		size_t len = socket.read_some(boost::asio::buffer(buff), error);
 
 		if (error)
