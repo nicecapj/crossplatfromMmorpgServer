@@ -14,7 +14,16 @@ int main()
 {
 	boost::asio::io_service ios;
 	tcp::endpoint endpoint(tcp::v4(), SERVER_PORT);
-	tcp::acceptor acceptor(ios, endpoint);
+	
+	//old listen flow
+	tcp::acceptor acceptor(ios);
+	acceptor.open(endpoint.protocol());
+	acceptor.set_option(boost::asio::socket_base::reuse_address(true));
+	acceptor.bind(endpoint);
+	acceptor.listen();
+
+	//tcp::acceptor acceptor(ios, endpoint);	//new listen flow
+
 
 	tcp::socket socket(ios);
 	acceptor.accept(socket);
