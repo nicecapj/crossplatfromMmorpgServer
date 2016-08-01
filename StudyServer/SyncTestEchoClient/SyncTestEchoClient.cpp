@@ -69,8 +69,14 @@ int main()
 		}
 
 		std::cout << "Msg : " << readBuff.data() << std::endl;;
-	}
 
+
+		if (socket.is_open())
+		{
+			socket.close();
+		}
+
+	}
     return 0;
 }
 
