@@ -9,3 +9,4 @@ ThirdParty/boost_1_61_0/bin.v2/*
 *.ipch
 *.idb
 *.db
+*.opendb
