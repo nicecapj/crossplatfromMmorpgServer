@@ -20,13 +20,14 @@ public:
 
 	void PostReceive()
 	{
-		memset(receiveBuffer.data(), 0, receiveBuffer.size());
+		memset(receiveBuffer_.data(), 0, receiveBuffer_.size());
 
-		socket_.async_read_some(boost::asio::buffer(receiveBuffer),
+		socket_.async_read_some(boost::asio::buffer(receiveBuffer_),
 			boost::bind(&Session::HandleRead, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
 		//c++11
-		//socket_.async_read_some(boost::asio::buffer(receiveBuffer), [this](boost::system::error_code, std::size_t)->void{});
+		//socket_.async_read_some(boost::asio::buffer(receiveBuffer_), 
+		//	[this](boost::system::error_code error_code, std::size_t bytes_transferred)->void { HandleRead(error_code, bytes_transferred); });
 			
 	}
 
@@ -35,8 +36,8 @@ private:
 	void HandleRead(boost::system::error_code, std::size_t);
 
 	tcp::socket socket_;
-	std::array<char, 128> receiveBuffer;
-	
+	std::array<char, 128> receiveBuffer_;
+	std::string writeMessage;
 
 };
 
