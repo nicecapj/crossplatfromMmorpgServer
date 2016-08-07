@@ -11,9 +11,7 @@ class Session
 {	
 public:
 
-	Session(boost::asio::io_service& ios):socket_(ios) 
-	{}
-
+	Session(boost::asio::io_service& ios);
 	~Session();
 
 	tcp::socket& Socket() { return socket_;  }

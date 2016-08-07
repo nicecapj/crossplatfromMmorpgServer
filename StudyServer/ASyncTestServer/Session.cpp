@@ -1,6 +1,12 @@
 #include "Session.h"
 #include <string>
 
+Session::Session(boost::asio::io_service& ios) 
+	:socket_(ios)
+{
+	std::cout << "" << std::endl;	//debugPoint
+}
+
 Session::~Session()
 {
 	if (socket_.is_open())
