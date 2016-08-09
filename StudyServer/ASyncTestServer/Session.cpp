@@ -39,7 +39,7 @@ void Session::HandleRead(boost::system::error_code error_code, std::size_t bytes
 	else
 	{
 		const std::string strRecvMessage = receiveBuffer_.data();
-		std::cout << "recv message : " << strRecvMessage << "rece size : " << bytes_transferred << std::endl;
+		std::cout << "recv message : " << strRecvMessage << "size : " << bytes_transferred << std::endl;
 
 		char szMessage[128] = { 0 };
 		sprintf_s(szMessage, 128 - 1, "Re : %s", strRecvMessage.c_str());

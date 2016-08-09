@@ -1,5 +1,6 @@
 // AsyncTestClient.cpp : Defines the entry point for the console application.
 //
+#include<stdio.h>
 #include <iostream>
 #include <boost\asio.hpp>
 #include <string>
@@ -31,8 +32,7 @@ int main()
 	ios.run();
 	
 	
-
-
+	getchar();
     return 0;
 }
 

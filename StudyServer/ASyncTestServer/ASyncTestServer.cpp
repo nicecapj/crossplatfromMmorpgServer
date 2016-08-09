@@ -1,5 +1,6 @@
 // ASyncTestServer.cpp : Defines the entry point for the console application.
 //
+#include<stdio.h>
 #include<iostream>
 #include"TcpServer.h"
 
@@ -13,6 +14,7 @@ int main()
 
 	std::cout << "Exit Server" << std::endl;
 
+	getchar();
     return 0;
 }
 

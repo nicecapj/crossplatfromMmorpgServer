@@ -29,5 +29,8 @@
     <ClInclude Include="TcpClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlatformDefine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
