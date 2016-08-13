@@ -1,6 +1,9 @@
 #include "Session.h"
 #include <string>
 
+#include "TcpServer.h"
+#include "Logger.h"
+
 Session::Session(boost::asio::io_service& ios, int sessionID)
 	:socket_(ios)
 {
@@ -21,20 +24,31 @@ void Session::Initialze()
 
 }
 
+void Session::PostReceive()
+{
+	memset(receiveBuffer_.data(), 0, receiveBuffer_.size());
+
+	socket_.async_read_some(boost::asio::buffer(receiveBuffer_),
+		boost::bind(&Session::HandleRead, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));	
+}
+
+void Session::PostSend()
+{
+}
+
 void Session::HandleWrite(boost::system::error_code error_code, std::size_t bytes_transferred)
 {
 
 }
 
 void Session::HandleRead(boost::system::error_code error_code, std::size_t bytes_transferred)
-{
+{	
 	if (error_code)
 	{
-
 		if (error_code == boost::asio::error::eof)
 		{
 			std::cout << error_code.message() << std::endl;
-			std::cout << "disconnected client" << std::endl;
+			std::cout << "disconnected client" << std::endl;			
 		}
 		else
 		{

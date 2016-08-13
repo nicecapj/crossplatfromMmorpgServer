@@ -12,18 +12,24 @@ class Session;
 class TcpServer
 {
 public:
-	TcpServer(io_service& io_service);
+	TcpServer(io_service& io_service, unsigned short potNum);
 	virtual ~TcpServer();
 
 	void Initialize(int maxConnection);
-	///bind -> listen -> accept
-	bool PostAccept();
+	void Start();
+
+	void CloseSession(int sessionID);
 
 private:
+	///bind -> listen -> accept	
+	bool PostAccept();
+
 	void HandleAccept(Session* pSession, const boost::system::error_code& error_code);
 
 	std::vector<Session*> sessionList_;	
 	std::queue<int> sessionQ_;
 	boost::asio::ip::tcp::acceptor acceptor_;
+
+	bool hasSession = false;
 };
 

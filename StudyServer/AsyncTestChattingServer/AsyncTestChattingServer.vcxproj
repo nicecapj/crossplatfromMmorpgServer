@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="Protocol.h" />
     <ClInclude Include="Session.h" />
     <ClInclude Include="TcpServer.h" />
   </ItemGroup>

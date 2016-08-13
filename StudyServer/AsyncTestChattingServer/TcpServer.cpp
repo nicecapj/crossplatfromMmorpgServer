@@ -9,16 +9,16 @@
 #include "Logger.h"
 #include "Session.h"
 
-const int PORT_NUMBER = 7777;
-const int MAX_CONNECTION = 20;
 
-TcpServer::TcpServer(io_service& io_service)
-	:acceptor_(io_service, tcp::endpoint(tcp::v4(), PORT_NUMBER))
+TcpServer::TcpServer(io_service& io_service, unsigned short portNum)
+	:acceptor_(io_service, tcp::endpoint(tcp::v4(), portNum))
 {
-	Initialize(MAX_CONNECTION);
+	hasSession = false;
+}
 
+void TcpServer::Start()
+{
 	PostAccept();
-
 }
 
 void TcpServer::Initialize(int maxConnection)
@@ -43,8 +43,11 @@ bool TcpServer::PostAccept()
 	if (sessionQ_.empty())
 	{		
 		Logger::Log(Logger::LogType::Warning, "Max Connection");
+		hasSession = false;
 		return false;
 	}
+
+	hasSession = true;
 
 	int sessionID = sessionQ_.front();	
 	sessionQ_.pop();
@@ -56,6 +59,21 @@ bool TcpServer::PostAccept()
 		boost::asio::placeholders::error));
 
 	return true;
+}
+
+void TcpServer::CloseSession(int sessionID)
+{
+	//if (sessionList_[sessionID]->Socket().is_open())
+	{
+		sessionList_[sessionID]->Socket().close();
+	}
+
+	sessionQ_.push(sessionID);
+
+	if (!hasSession)
+	{
+		PostAccept();
+	}
 }
 
 void TcpServer::HandleAccept(Session* pSession, const boost::system::error_code& error_code)
@@ -71,7 +89,12 @@ void TcpServer::HandleAccept(Session* pSession, const boost::system::error_code&
 	}
 	else
 	{
-		Logger::Log(Logger::LogType::Warning, "failed to connect");		
+		Logger::Log(Logger::LogType::Warning, error_code.message());
+
+		if (!hasSession)
+		{
+			PostAccept();
+		}	
 	}
 }
 
