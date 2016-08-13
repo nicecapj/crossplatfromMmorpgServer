@@ -14,6 +14,6 @@ public:
 		Error,
 	};
 
-	static void Log(LogType logType, std::string msg);
+	static void Log(LogType logType, std::string msg);	
 };
 

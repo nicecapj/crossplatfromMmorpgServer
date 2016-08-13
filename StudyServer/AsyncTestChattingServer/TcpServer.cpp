@@ -29,7 +29,7 @@ void TcpServer::Initialize(int maxConnection)
 
 	for (int i = 0; i < maxConnection; ++i)
 	{
-		Session* pSession = new Session(acceptor_.get_io_service(), i);
+		Session* pSession = new Session(acceptor_.get_io_service(), i, this);
 		if (pSession)
 		{
 			sessionList_.push_back(pSession);

@@ -4,11 +4,10 @@
 #include "TcpServer.h"
 #include "Logger.h"
 
-Session::Session(boost::asio::io_service& ios, int sessionID)
-	:socket_(ios)
+Session::Session(boost::asio::io_service& ios, int sessionID, TcpServer* pOwnerServer)
+	:socket_(ios), pOwnerServer_(pOwnerServer)
 {
-	sessionID_ = sessionID;
-	std::cout << "" << std::endl;	//debugPoint
+	sessionID_ = sessionID;	
 }
 
 Session::~Session()
@@ -54,6 +53,8 @@ void Session::HandleRead(boost::system::error_code error_code, std::size_t bytes
 		{
 			std::cout << "error id : " << error_code.value() << " error message : " << error_code.message() << std::endl;
 		}
+
+		pOwnerServer_->CloseSession(sessionID_);
 	}
 	else
 	{

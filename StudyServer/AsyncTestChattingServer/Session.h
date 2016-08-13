@@ -4,15 +4,17 @@
 #include <array>
 #include "boost\asio.hpp"
 #include "boost\bind.hpp"
+
 #include "Protocol.h"
 
 using boost::asio::ip::tcp;
 
+class TcpServer;
 class Session
 {	
 public:
 
-	Session(boost::asio::io_service& ios, int sessionID);
+	Session(boost::asio::io_service& ios, int sessionID, TcpServer* pOwnerServer);
 	~Session();
 
 	tcp::socket& Socket() { return socket_;  }
@@ -34,6 +36,6 @@ private:
 
 	int sessionID_;
 
-	class TcpServer* ownerServer_;
+	TcpServer* pOwnerServer_;
 };
 
