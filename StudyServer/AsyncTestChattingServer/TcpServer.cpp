@@ -4,8 +4,9 @@
 
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
-#include <boost/format.hpp>
+//#include <boost/format.hpp>
 
+#include "Protocol.h"
 #include "Logger.h"
 #include "Session.h"
 
@@ -23,7 +24,8 @@ void TcpServer::Start()
 
 void TcpServer::Initialize(int maxConnection)
 {
-	Logger::Log(Logger::LogType::Normal, boost::str(boost::format("Initialize - MaxConnection : %d") % maxConnection));
+	//Logger::Log(Logger::LogType::Normal, boost::str(boost::format("Initialize - MaxConnection : %d") % maxConnection));
+	Logger::Log(Logger::LogType::Normal, "Initialize - MaxConnection : %d", maxConnection);
 
 	sessionList_.clear();
 
@@ -76,11 +78,88 @@ void TcpServer::CloseSession(int sessionID)
 	}
 }
 
+void TcpServer::ProcessPacket(const int sessionID, const char* pReceivedPacket)
+{
+	//PACKET_HEADER* pHeader = reinterpret_cast<PACKET_HEADER*>(pPacketData);
+	PacketHeader* pHeader = (PacketHeader*)(pReceivedPacket);
+
+	Session* pCurrentSession = sessionList_[sessionID];
+
+
+	switch (pHeader->Id)
+	{		
+		case PacketCode::EnterReq:
+		{
+			const PacketEnterReq* pPacket = reinterpret_cast<const PacketEnterReq*>(pReceivedPacket);
+			if (pPacket)
+			{
+				pPacket->Id;				
+
+				sessionList_[sessionID]->SetName(pPacket->NickName);
+				Logger::Log(Logger::LogType::Normal, "Client login : %s\n", pPacket->NickName);
+
+				PacketEnterRes resPacket;
+				resPacket.isSuccess = true;
+				
+				pCurrentSession->PostSend(&resPacket);
+			}
+		}
+		break;
+
+		case PacketCode::ChatReq:
+		{
+			const PacketChatReq* pPacket = reinterpret_cast<const PacketChatReq*>(pReceivedPacket);
+			if (pPacket)
+			{
+				PacketChatRes resPacket;
+				resPacket.isSuccess = true;
+				pCurrentSession->PostSend(&resPacket);
+				
+				if (resPacket.isSuccess == true)
+				{
+					for (auto session : sessionList_)
+					{
+						if (session->GetSessionID() == sessionID)
+							continue;
+
+						if (session->Socket().is_open())
+						{
+							PacketChatNfy broadcastPacket;
+							broadcastPacket.Set(pCurrentSession->GetName(), pPacket->Message);
+							session->PostSend(&broadcastPacket);
+						}
+					}
+				}				
+			}
+		}
+		break;
+		
+		//client
+		//case PacketCode::EnterRes: 
+		//{
+		//	const PacketEnterRes* pPacket = reinterpret_cast<const PacketEnterRes*>(pReceivedPacket);
+		//	if (pPacket->isSuccess)
+		//	{
+
+		//	}
+		//}
+		//break;
+		//
+		//case PacketCode::ChatRes: 
+		//{
+		//	const PacketChatRes* pPacket = reinterpret_cast<const PacketChatRes*>(pReceivedPacket);			
+		//	std::cout << pPacket->NickName << " : " << pPacket->Message << std::endl;
+		//}
+		//break;
+	}
+}
+
 void TcpServer::HandleAccept(Session* pSession, const boost::system::error_code& error_code)
 {
 	if (!error_code)
 	{		
-		Logger::Log(Logger::LogType::Normal, boost::str(boost::format("connected client : sessionID") % pSession->GetSessionID()));		
+		//Logger::Log(Logger::LogType::Normal, boost::str(boost::format("connected client : sessionID") % pSession->GetSessionID()));		
+		Logger::Log(Logger::LogType::Normal, "connected client : sessionID : %d", pSession->GetSessionID());
 		
 		pSession->Initialze();
 		pSession->PostReceive();

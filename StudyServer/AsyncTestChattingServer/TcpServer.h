@@ -18,6 +18,8 @@ public:
 	void Initialize(int maxConnection);
 	void Start();
 
+	
+	void ProcessPacket(const int sessionID, const char* pPacketData);
 	void CloseSession(int sessionID);
 
 private:

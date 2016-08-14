@@ -11,8 +11,11 @@ int main()
 	const int MAX_CONNECTION = 20;
 
 	boost::asio::io_service ios;
+	
 	TcpServer server(ios, PORT_NUMBER);
 	server.Initialize(MAX_CONNECTION);
+	server.Start();
+
 	ios.run();
 
 	Logger::Log(Logger::LogType::Normal, "Exit Server");
