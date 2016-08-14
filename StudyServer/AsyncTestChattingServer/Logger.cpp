@@ -1,5 +1,6 @@
 #include "Logger.h"
 #include <iostream>
+#include <boost/format.hpp>
 
 #define EnumToStr(a)    #a
 static std::string LogTypeName[]
@@ -12,6 +13,16 @@ static std::string LogTypeName[]
 void Logger::Log(Logger::LogType logType, std::string msg)
 {	
 	std::cout << "["  << ::LogTypeName[logType] << "]" << msg << std::endl;
+}
+
+void Logger::Log(LogType logType, char const* const _Format, ...)
+{
+	int _Result;
+	va_list _ArgList;
+	__crt_va_start(_ArgList, _Format);
+	_Result = _vfprintf_l(stdout, _Format, NULL, _ArgList);
+	__crt_va_end(_ArgList);
+	//return _Result;		
 }
 
 Logger::Logger()

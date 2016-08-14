@@ -1,4 +1,5 @@
 #pragma once
+#include <stdarg.h>
 #include <string>
 
 class Logger
@@ -15,5 +16,5 @@ public:
 	};
 
 	static void Log(LogType logType, std::string msg);	
+	static void Log(LogType logType, char const* const _Format, ...);
 };
-
