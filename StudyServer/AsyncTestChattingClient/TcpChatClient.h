@@ -37,7 +37,7 @@ private:
 	boost::asio::io_service& io_service_;
 	boost::asio::ip::tcp::endpoint endpoint_;
 
-	boost::array<char, 128> receiveBuffer_;	
+	boost::array<char, MAX_RECEIVE_BUFFER_SIZE> receiveBuffer_;
 
 	size_t packetBufferMark_ = 0;
 	char packetBuffer[MAX_RECEIVE_BUFFER_SIZE * 2];
