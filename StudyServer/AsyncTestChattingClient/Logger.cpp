@@ -22,7 +22,7 @@ void Logger::Log(LogType logType, char const* const _Format, ...)
 	__crt_va_start(_ArgList, _Format);
 	_Result = _vfprintf_l(stdout, _Format, NULL, _ArgList);
 	__crt_va_end(_ArgList);
-
+	
 	std::cout << std::endl;
 	//return _Result;		
 }

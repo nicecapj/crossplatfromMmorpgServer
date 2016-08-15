@@ -1,6 +1,10 @@
 # crossplatfromMmorpgServer
 crossplatform mmorpg server for study
 
+0. build boost
+release static library : ThirdParty\boost_1_61_0\stage\lib
+debug static library : ThirdParty\boost_1_61_0\stage\libd
+
 
 for study
 1. study c++/tcp/network...

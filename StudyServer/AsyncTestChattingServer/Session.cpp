@@ -9,6 +9,7 @@ Session::Session(boost::asio::io_service& ios, int sessionID, TcpServer* pOwnerS
 	sessionID_(sessionID),
 	pOwnerServer_(pOwnerServer)
 {
+	packetBufferMark_ = 0;
 }
 
 Session::~Session()
@@ -32,7 +33,7 @@ void Session::Initialze()
 
 void Session::PostReceive()
 {	
-	socket_.async_read_some(boost::asio::buffer(receiveBuffer_),
+ 	socket_.async_read_some(boost::asio::buffer(receiveBuffer_),
 		boost::bind(&Session::HandleRead, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));	
 }
 

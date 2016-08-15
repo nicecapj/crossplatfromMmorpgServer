@@ -1,7 +1,7 @@
 #pragma once
 
 const int MAX_RECEIVE_BUFFER_SIZE = 1024;
-const int MAX_NICNAME_LENGTH = 64+1;
+const int MAX_NINAME_LENGTH = 64+1;
 const int MAX_MESSAGE_LENGTH = 255 + 1;
 
 struct PacketHeader
@@ -12,31 +12,31 @@ struct PacketHeader
 
 enum PacketCode : short
 {
-	LoginReq =  1,
-	LoginRes,
+	EnterReq =  1,
+	EnterRes,
 	ChatReq,
 	ChatRes,
 	ChatNfy,	//broadcast
 };
 
-struct PacketLoginReq : public PacketHeader
+struct PacketEnterReq : public PacketHeader
 {
-	PacketLoginReq()
+	PacketEnterReq()
 	{
-		Id = PacketCode::LoginReq;
-		Size = sizeof(PacketLoginReq);
-		memset(NickName, 0, MAX_NICNAME_LENGTH);
+		Id = PacketCode::EnterReq;
+		Size = sizeof(PacketEnterReq);
+		memset(NickName, 0, MAX_NINAME_LENGTH);
 	}	
 
-	char NickName[MAX_NICNAME_LENGTH];
+	char NickName[MAX_NINAME_LENGTH];
 };
 
-struct PacketLoginRes : public PacketHeader
+struct PacketEnterRes : public PacketHeader
 {
-	PacketLoginRes()
+	PacketEnterRes()
 	{
-		Id = PacketCode::LoginRes;
-		Size = sizeof(PacketLoginRes);
+		Id = PacketCode::EnterRes;
+		Size = sizeof(PacketEnterRes);
 		isSuccess = false;
 	}
 
@@ -62,20 +62,9 @@ struct PacketChatRes : public PacketHeader
 		Id = PacketCode::ChatRes;
 		Size = sizeof(PacketChatRes);
 		isSuccess = false;
-		memset(NickName, 0, MAX_NICNAME_LENGTH);
-		memset(&Message[0], 0, MAX_MESSAGE_LENGTH);
 	}	
 
-	void Set(std::string nickname, std::string message)
-	{
-		memcpy(&NickName[0], nickname.data(), nickname.length());
-		memcpy(&Message[0], message.data(), message.length());
-	}
-
 	bool isSuccess = false;
-
-	char NickName[MAX_NICNAME_LENGTH];	//if client save data, not necessary
-	char Message[MAX_MESSAGE_LENGTH];	//if client save data, not necessary
 };
 
 struct PacketChatNfy : public PacketHeader
@@ -84,7 +73,7 @@ struct PacketChatNfy : public PacketHeader
 	{
 		Id = PacketCode::ChatRes;
 		Size = sizeof(PacketChatRes);
-		memset(NickName, 0, MAX_NICNAME_LENGTH);
+		memset(NickName, 0, MAX_NINAME_LENGTH);
 		memset(&Message[0], 0, MAX_MESSAGE_LENGTH);
 	}
 
@@ -95,7 +84,7 @@ struct PacketChatNfy : public PacketHeader
 	}
 
 
-	char NickName[MAX_NICNAME_LENGTH];
+	char NickName[MAX_NINAME_LENGTH];
 	char Message[MAX_MESSAGE_LENGTH];
 
 };

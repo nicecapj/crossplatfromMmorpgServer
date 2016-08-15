@@ -88,9 +88,9 @@ void TcpServer::ProcessPacket(const int sessionID, const char* pReceivedPacket)
 
 	switch (pHeader->Id)
 	{		
-		case PacketCode::EnterReq:
+		case PacketCode::LoginReq:
 		{
-			const PacketEnterReq* pPacket = reinterpret_cast<const PacketEnterReq*>(pReceivedPacket);
+			const PacketLoginReq* pPacket = reinterpret_cast<const PacketLoginReq*>(pReceivedPacket);
 			if (pPacket)
 			{
 				pPacket->Id;				
@@ -98,7 +98,7 @@ void TcpServer::ProcessPacket(const int sessionID, const char* pReceivedPacket)
 				sessionList_[sessionID]->SetName(pPacket->NickName);
 				Logger::Log(Logger::LogType::Normal, "Client login : %s\n", pPacket->NickName);
 
-				PacketEnterRes resPacket;
+				PacketLoginRes resPacket;
 				resPacket.isSuccess = true;
 				
 				pCurrentSession->PostSend(&resPacket);
@@ -113,6 +113,7 @@ void TcpServer::ProcessPacket(const int sessionID, const char* pReceivedPacket)
 			{
 				PacketChatRes resPacket;
 				resPacket.isSuccess = true;
+				resPacket.Set(pCurrentSession->GetName(), pPacket->Message);//if client save data, not necessary
 				pCurrentSession->PostSend(&resPacket);
 				
 				if (resPacket.isSuccess == true)
