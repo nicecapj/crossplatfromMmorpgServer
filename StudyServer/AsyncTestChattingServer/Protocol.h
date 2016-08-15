@@ -82,8 +82,8 @@ struct PacketChatNfy : public PacketHeader
 {
 	PacketChatNfy()
 	{
-		Id = PacketCode::ChatRes;
-		Size = sizeof(PacketChatRes);
+		Id = PacketCode::ChatNfy;
+		Size = sizeof(PacketChatNfy);
 		memset(NickName, 0, MAX_NICNAME_LENGTH);
 		memset(&Message[0], 0, MAX_MESSAGE_LENGTH);
 	}
