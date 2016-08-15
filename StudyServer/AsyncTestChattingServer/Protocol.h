@@ -1,7 +1,7 @@
 #pragma once
 
 const int MAX_RECEIVE_BUFFER_SIZE = 1024;
-const int MAX_NICNAME_LENGTH = 64+1;
+const int MAX_NICNAME_LENGTH = 63+1;
 const int MAX_MESSAGE_LENGTH = 255 + 1;
 
 struct PacketHeader
