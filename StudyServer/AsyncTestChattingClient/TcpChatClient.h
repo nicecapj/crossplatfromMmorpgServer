@@ -44,4 +44,6 @@ private:
 	std::deque<char*> sendPacketQ_;
 
 	bool isLogin_ = false;
+
+	CRITICAL_SECTION lock_;	//windows only
 };
