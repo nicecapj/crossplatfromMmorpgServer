@@ -2,6 +2,7 @@
 #include <deque>
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
+#include <boost/thread.hpp>
 
 #include "../AsyncTestChattingServer/Protocol.h"
 
@@ -43,7 +44,6 @@ private:
 	char packetBuffer[MAX_RECEIVE_BUFFER_SIZE * 2];
 	std::deque<char*> sendPacketQ_;
 
-	bool isLogin_ = false;
-
-	CRITICAL_SECTION lock_;	//windows only
+	bool isLogin_ = false;		
+	boost::mutex mutex_;
 };

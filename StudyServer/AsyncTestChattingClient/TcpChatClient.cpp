@@ -12,9 +12,7 @@ TcpChatClient::TcpChatClient(boost::asio::io_service& ios,
 	:io_service_(ios), socket_(ios), endpoint_(endpoint)
 {	
 	packetBufferMark_ = 0;
-	isLogin_ = false;
-
-	InitializeCriticalSectionAndSpinCount(&lock_, 2000);
+	isLogin_ = false;	
 }
 
 void TcpChatClient::Connect()
@@ -47,8 +45,8 @@ void TcpChatClient::Close()
 
 
 void TcpChatClient::PostSend(const int packetSize, char* pPacket)
-{
-	EnterCriticalSection(&lock_);
+{	
+	boost::mutex::scoped_lock lock_(mutex_);
 
 	char* pSendpacket = new char[packetSize];
 	memcpy(pSendpacket, pPacket, packetSize);
@@ -60,7 +58,7 @@ void TcpChatClient::PostSend(const int packetSize, char* pPacket)
 		boost::asio::buffer(pSendpacket, packetSize),
 		boost::bind(&TcpChatClient::HandleWrite, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 
-	LeaveCriticalSection(&lock_);	
+	lock_.unlock();	
 }
 
 void TcpChatClient::PostReceive()
@@ -73,7 +71,7 @@ void TcpChatClient::PostReceive()
 
 TcpChatClient::~TcpChatClient()
 {
-	EnterCriticalSection(&lock_);
+	boost::mutex::scoped_lock lock_(mutex_);
 
 	while (!sendPacketQ_.empty())
 	{
@@ -81,8 +79,8 @@ TcpChatClient::~TcpChatClient()
 		sendPacketQ_.pop_front();
 	}
 
-	LeaveCriticalSection(&lock_);
-	DeleteCriticalSection(&lock_);
+	lock_.unlock();
+	lock_.release();
 }
 
 
@@ -97,7 +95,7 @@ void TcpChatClient::HandleWrite(boost::system::error_code error_code, size_t byt
 	}
 	else
 	{
-		EnterCriticalSection(&lock_);
+		boost::mutex::scoped_lock lock_(mutex_);
 
 		delete[] sendPacketQ_.front();
 		sendPacketQ_.pop_front();
@@ -109,7 +107,7 @@ void TcpChatClient::HandleWrite(boost::system::error_code error_code, size_t byt
 			PostSend(pHeader);
 		}
 
-		LeaveCriticalSection(&lock_);
+		lock_.unlock();
 	}
 }
 
