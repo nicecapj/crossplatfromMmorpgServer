@@ -37,3 +37,9 @@ boost.format (so..slow...)
 
 google c++ coding convention
 https://google.github.io/styleguide/cppguide.html
+
+google glog(log lairary)
+https://github.com/google/glog
+
+log4cpp (log library)
+https://sourceforge.net/projects/log4cpp/files/
