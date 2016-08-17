@@ -43,7 +43,7 @@ void TcpChatClient::Close()
 	}
 }
 
-
+//call by main thread. so. important to managing share resource.
 void TcpChatClient::PostSend(const int packetSize, char* pPacket)
 {	
 	boost::mutex::scoped_lock lock_(mutex_);
@@ -84,6 +84,7 @@ TcpChatClient::~TcpChatClient()
 }
 
 
+//call by walker thread. so. important to managing share resource.
 void TcpChatClient::HandleWrite(boost::system::error_code error_code, size_t bytes_transferred)
 {
 	if (error_code)
