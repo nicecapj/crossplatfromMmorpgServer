@@ -23,8 +23,10 @@ public:
 
 	void ProcessPacket(const char*pData);
 
-	bool IsConnected() { return socket_.is_open(); }
-	bool IsLogin() { return isLogin_; }	
+	//bool IsConnected() { return socket_.is_open(); }	//is_open() is not return connected_server. only valid socket.
+	bool IsValidSocket() { return socket_.is_open(); }
+	bool IsConnectedServer() { return isConnectedServer_;  }
+	bool IsLoggedin() { return isLogin_; }	
 
 private:	
 	void PostSend(const int packetSize, char* pPacket);	
@@ -45,5 +47,6 @@ private:
 	std::deque<char*> sendPacketQ_;
 
 	bool isLogin_ = false;		
+	bool isConnectedServer_ = false;
 	boost::mutex mutex_;
 };

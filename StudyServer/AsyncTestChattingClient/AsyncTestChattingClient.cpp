@@ -4,12 +4,14 @@
 #include <iostream>
 #include <string>
 
-#include <boost\asio.hpp>
+#include <boost/asio.hpp>
 #include <boost/thread.hpp>
 
 #include "Logger.h"
 #include "TcpChatClient.h"
 #include "../AsyncTestChattingServer/Protocol.h"
+
+#define STRESS_TEST
 
 int main()
 {
@@ -36,13 +38,14 @@ int main()
 		{
 			break;
 		}
-
-		if (!client.IsConnected())
+		
+		if (!client.IsConnectedServer())
 		{
 			Logger::Log(Logger::LogType::Error, "disconnected with server");
+			break;
 		}
 
-		if (client.IsLogin())
+		if (client.IsLoggedin())
 		{
 			PacketChatReq packet;
 			strcpy_s(packet.Message, MAX_NICNAME_LENGTH, messageBuff);
@@ -55,7 +58,14 @@ int main()
 			client.PostSend<PacketLoginReq>(&packet);
 		}
 	}
-#else	
+	
+#else		
+	while (!client.IsConnectedServer())
+	{
+		//busy wait until connect to server.
+		std::cout << "wait to connect" << std::endl;
+	}
+		
 	char messageBuff[MAX_MESSAGE_LENGTH] = { 0, };
 
 	PacketLoginReq packet;
@@ -72,12 +82,12 @@ int main()
 		strcpy(&messageBuff[0], "ddddd");
 		strcpy_s(messagePacket.Message, MAX_NICNAME_LENGTH, messageBuff);
 		client.PostSend<PacketChatReq>(&messagePacket);
-	}
+	}	
 #endif
 
-	
+			
 	ios.stop();
-	client.Close();
+	client.Close();	
 	workThread.join();
 
 	getchar();

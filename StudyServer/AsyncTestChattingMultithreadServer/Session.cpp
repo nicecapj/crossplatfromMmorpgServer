@@ -9,7 +9,8 @@ Session::Session(boost::asio::io_service& ios, int sessionID, TcpServer* pOwnerS
 	sessionID_(sessionID),
 	pOwnerServer_(pOwnerServer)
 {
-	packetBufferMark_ = 0;
+	mutex_.initialize();
+	packetBufferMark_ = 0;	
 }
 
 Session::~Session()
@@ -39,6 +40,8 @@ void Session::PostReceive()
 
 void Session::PostSend(const int packetSize, char* pPacket)
 {
+	boost::mutex::scoped_lock lock_(mutex_);
+
 	char* pSendPacket = new char[packetSize];
 	memcpy(pSendPacket, pPacket, packetSize);
 
@@ -51,6 +54,8 @@ void Session::PostSend(const int packetSize, char* pPacket)
 
 void Session::HandleWrite(boost::system::error_code error_code, std::size_t bytes_transferred)
 {
+	boost::mutex::scoped_lock lock_(mutex_);
+
 	delete[] sendPacketQ_.front();
 	sendPacketQ_.pop_front();
 
@@ -59,11 +64,15 @@ void Session::HandleWrite(boost::system::error_code error_code, std::size_t byte
 		char* pPakcet = sendPacketQ_.front();
 		PacketHeader* pHeader = reinterpret_cast<PacketHeader*>(pPakcet);
 		PostSend(pHeader);
-	}
+	}	
 }
 
 void Session::HandleRead(boost::system::error_code error_code, std::size_t bytes_transferred)
-{	
+{
+	std::cout << boost::this_thread::get_id() << std::endl;
+
+	boost::mutex::scoped_lock lock_(mutex_);
+
 	if (error_code)
 	{
 		if (error_code == boost::asio::error::eof)

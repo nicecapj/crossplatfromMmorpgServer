@@ -4,8 +4,9 @@
 #include <array>
 #include <deque>
 #include <string>
-#include "boost\asio.hpp"
-#include "boost\bind.hpp"
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
+#include <boost/thread.hpp>
 
 #include "Protocol.h"
 
@@ -55,5 +56,7 @@ private:
 	TcpServer* pOwnerServer_;
 
 	std::string name_;
+	
+	boost::mutex mutex_;
 };
 

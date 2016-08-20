@@ -21,7 +21,9 @@ int main()
 
 	std::vector<boost::thread> threads;
 
-	const int MAX_THREAD = 8;
+	unsigned int hardwareThreadCount = boost::thread::hardware_concurrency();
+	const int MAX_THREAD = hardwareThreadCount * 2;	//good for multithread programming.
+
 	for (int i = 0; i < MAX_THREAD; ++i)
 	{		
 		threads.emplace_back(boost::thread(boost::bind(&boost::asio::io_service::run, &ios)));
