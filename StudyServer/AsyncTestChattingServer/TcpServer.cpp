@@ -15,6 +15,7 @@ TcpServer::TcpServer(io_service& io_service, unsigned short portNum)
 	:acceptor_(io_service, tcp::endpoint(tcp::v4(), portNum))
 {
 	hasSession = false;
+	packetProcessCount_ = 0;
 }
 
 void TcpServer::Start()
@@ -85,6 +86,8 @@ void TcpServer::ProcessPacket(const int sessionID, const char* pReceivedPacket)
 
 	Session* pCurrentSession = sessionList_[sessionID];
 
+	++packetProcessCount_;
+	std::cout << "Process Packet Count : " << packetProcessCount_ << std::endl;
 
 	switch (pHeader->Id)
 	{		

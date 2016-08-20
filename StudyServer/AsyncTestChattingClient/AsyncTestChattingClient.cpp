@@ -27,6 +27,8 @@ int main()
 	//ios.run();	//do not return.  because of thread block
 	boost::thread workThread(boost::bind(&boost::asio::io_service::run, &ios));	
 
+	
+#ifndef STRESS_TEST
 	char messageBuff[MAX_MESSAGE_LENGTH] = { 0, };
 	while (std::cin.getline(messageBuff, MAX_MESSAGE_LENGTH))
 	{
@@ -53,7 +55,25 @@ int main()
 			client.PostSend<PacketLoginReq>(&packet);
 		}
 	}
+#else	
+	char messageBuff[MAX_MESSAGE_LENGTH] = { 0, };
 
+	PacketLoginReq packet;
+	strcpy(&messageBuff[0], "abcd");
+	strcpy_s(packet.NickName, MAX_NICNAME_LENGTH, messageBuff);
+	client.PostSend<PacketLoginReq>(&packet);
+
+
+	for (int i = 0; i < 10000; ++i)
+	{
+		std::cout << "call : " << i << std::endl;
+
+		PacketChatReq messagePacket;
+		strcpy(&messageBuff[0], "ddddd");
+		strcpy_s(messagePacket.Message, MAX_NICNAME_LENGTH, messageBuff);
+		client.PostSend<PacketChatReq>(&messagePacket);
+	}
+#endif
 
 	
 	ios.stop();

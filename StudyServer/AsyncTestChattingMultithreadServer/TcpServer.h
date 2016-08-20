@@ -33,5 +33,7 @@ private:
 	boost::asio::ip::tcp::acceptor acceptor_;
 
 	bool hasSession = false;
+
+	int packetProcessCount_;
 };
 
