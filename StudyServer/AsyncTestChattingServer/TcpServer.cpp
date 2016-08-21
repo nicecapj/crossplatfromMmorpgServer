@@ -11,6 +11,8 @@
 #include "Logger.h"
 #include "Session.h"
 
+#include "Profiler.h"
+
 
 TcpServer::TcpServer(io_service& io_service, unsigned short portNum)
 	:acceptor_(io_service, tcp::endpoint(tcp::v4(), portNum))
@@ -88,7 +90,18 @@ void TcpServer::ProcessPacket(const int sessionID, const char* pReceivedPacket)
 	Session* pCurrentSession = sessionList_[sessionID];
 
 	++packetProcessCount_;
-	std::cout << "Process Packet Count : " << packetProcessCount_ << std::endl;
+	//std::cout << "Process Packet Count : " << packetProcessCount_ << std::endl;
+
+	if (packetProcessCount_ == 1)
+	{
+		Profiler::GetInstance()->SetBegin("process packet : 100000");
+	}
+
+	if (packetProcessCount_ == 100000)
+	{
+		Profiler::GetInstance()->SetEnd("process packet : 100000");
+		Profiler::GetInstance()->Report("process packet : 100000");
+	}
 
 	switch (pHeader->Id)
 	{		

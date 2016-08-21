@@ -153,13 +153,16 @@
   <ItemGroup>
     <ClCompile Include="AsyncTestChattingMultithreadServer.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="TcpServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="Profiler.h" />
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="Session.h" />
+    <ClInclude Include="StaticSingleton.h" />
     <ClInclude Include="TcpServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
