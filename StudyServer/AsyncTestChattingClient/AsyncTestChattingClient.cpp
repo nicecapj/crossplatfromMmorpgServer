@@ -75,13 +75,11 @@ int main()
 
 
 	for (int i = 0; i < 10000; ++i)
-	{
-		std::cout << "call : " << i << std::endl;
-
+	{		
 		PacketChatReq messagePacket;
 		strcpy(&messageBuff[0], "ddddd");
 		strcpy_s(messagePacket.Message, MAX_NICNAME_LENGTH, messageBuff);
-		client.PostSend<PacketChatReq>(&messagePacket);
+		client.PostSend<PacketChatReq>(&messagePacket);		
 	}	
 #endif
 

@@ -112,8 +112,7 @@ void Session::HandleRead(boost::system::error_code error_code, std::size_t bytes
 		}
 
 		if (packetTotalDataSize > 0)
-		{
-			//cas?
+		{			
 			char tempBuff[MAX_RECEIVE_BUFFER_SIZE] = { 0, };
 			memcpy(&tempBuff[0], &packetBuffer[readDataSize], packetTotalDataSize);
 			memcpy(&packetBuffer[0], &tempBuff[0], packetTotalDataSize);

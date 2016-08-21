@@ -8,9 +8,8 @@ Session::Session(boost::asio::io_service& ios, int sessionID, TcpServer* pOwnerS
 	:socket_(ios),
 	sessionID_(sessionID),
 	pOwnerServer_(pOwnerServer)
-{
-	mutex_.initialize();
-	packetBufferMark_ = 0;	
+{	
+	packetBufferMark_ = 0;			
 }
 
 Session::~Session()
@@ -39,8 +38,8 @@ void Session::PostReceive()
 }
 
 void Session::PostSend(const int packetSize, char* pPacket)
-{
-	boost::mutex::scoped_lock lock_(mutex_);
+{	
+	std::unique_lock<std::recursive_mutex> guard(mutex_);
 
 	char* pSendPacket = new char[packetSize];
 	memcpy(pSendPacket, pPacket, packetSize);
@@ -54,7 +53,7 @@ void Session::PostSend(const int packetSize, char* pPacket)
 
 void Session::HandleWrite(boost::system::error_code error_code, std::size_t bytes_transferred)
 {
-	boost::mutex::scoped_lock lock_(mutex_);
+	std::unique_lock<std::recursive_mutex> guard(mutex_);
 
 	delete[] sendPacketQ_.front();
 	sendPacketQ_.pop_front();
@@ -69,9 +68,9 @@ void Session::HandleWrite(boost::system::error_code error_code, std::size_t byte
 
 void Session::HandleRead(boost::system::error_code error_code, std::size_t bytes_transferred)
 {
-	std::cout << boost::this_thread::get_id() << std::endl;
+	std::cout << std::this_thread::get_id() << std::endl;	
 
-	boost::mutex::scoped_lock lock_(mutex_);
+	std::unique_lock<std::recursive_mutex> guard(mutex_);
 
 	if (error_code)
 	{
@@ -121,8 +120,7 @@ void Session::HandleRead(boost::system::error_code error_code, std::size_t bytes
 		}
 
 		if (packetTotalDataSize > 0)
-		{
-			//cas?
+		{			
 			char tempBuff[MAX_RECEIVE_BUFFER_SIZE] = { 0, };
 			memcpy(&tempBuff[0], &packetBuffer[readDataSize], packetTotalDataSize);
 			memcpy(&packetBuffer[0], &tempBuff[0], packetTotalDataSize);

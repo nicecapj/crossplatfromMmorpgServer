@@ -4,9 +4,11 @@
 #include <array>
 #include <deque>
 #include <string>
+#include <thread>
+#include <mutex>
+
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include <boost/thread.hpp>
 
 #include "Protocol.h"
 
@@ -57,6 +59,6 @@ private:
 
 	std::string name_;
 	
-	boost::mutex mutex_;
+	std::recursive_mutex mutex_;
 };
 

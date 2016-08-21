@@ -1,8 +1,12 @@
 #pragma once
 #include <deque>
+#include <thread>
+#include <array>
+#include <mutex>
+
 #include <boost/asio.hpp>
-#include <boost/array.hpp>
-#include <boost/thread.hpp>
+//#include <boost/array.hpp>
+//#include <boost/thread.hpp>
 
 #include "../AsyncTestChattingServer/Protocol.h"
 
@@ -40,13 +44,16 @@ private:
 	boost::asio::io_service& io_service_;
 	boost::asio::ip::tcp::endpoint endpoint_;
 
-	boost::array<char, MAX_RECEIVE_BUFFER_SIZE> receiveBuffer_;
+	std::array<char, MAX_RECEIVE_BUFFER_SIZE> receiveBuffer_;
 
 	size_t packetBufferMark_ = 0;
 	char packetBuffer[MAX_RECEIVE_BUFFER_SIZE * 2];
 	std::deque<char*> sendPacketQ_;
 
 	bool isLogin_ = false;		
-	bool isConnectedServer_ = false;
-	boost::mutex mutex_;
+	bool isConnectedServer_ = false;	
+	
+	std::recursive_mutex mutex_;	
+
+	int debugSendCount_ = 0;
 };

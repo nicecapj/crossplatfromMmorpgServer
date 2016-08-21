@@ -10,12 +10,12 @@
 TcpChatClient::TcpChatClient(boost::asio::io_service& ios,
 	const boost::asio::ip::tcp::endpoint&endpoint)
 	:io_service_(ios), socket_(ios), endpoint_(endpoint)
-{	
-	//mutex_.initialize();
-
+{		
 	packetBufferMark_ = 0;
 	isLogin_ = false;	
 	isConnectedServer_ = false;
+
+	debugSendCount_ = 0;
 }
 
 void TcpChatClient::Connect()
@@ -51,7 +51,10 @@ void TcpChatClient::Close()
 //call by main thread. so. important to managing share resource.
 void TcpChatClient::PostSend(const int packetSize, char* pPacket)
 {	
-	boost::mutex::scoped_lock lock_(mutex_);
+	std::cout << "call : PostSend : " << ++debugSendCount_ << std::endl;			
+	//std::lock_guard<std::recursive_mutex> guard(mutex_);
+	std::unique_lock<std::recursive_mutex> guard(mutex_);
+
 
 	char* pSendpacket = new char[packetSize];
 	memcpy(pSendpacket, pPacket, packetSize);
@@ -62,6 +65,7 @@ void TcpChatClient::PostSend(const int packetSize, char* pPacket)
 	boost::asio::async_write(socket_,
 		boost::asio::buffer(pSendpacket, packetSize),
 		boost::bind(&TcpChatClient::HandleWrite, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));		
+	
 }
 
 void TcpChatClient::PostReceive()
@@ -73,24 +77,23 @@ void TcpChatClient::PostReceive()
 }
 
 TcpChatClient::~TcpChatClient()
-{
-	boost::mutex::scoped_lock lock_(mutex_);
-
+{	
+	//std::lock_guard<std::recursive_mutex> guard(mutex_);
+	std::unique_lock<std::recursive_mutex> guard(mutex_);
 	while (!sendPacketQ_.empty())
 	{
 		delete[] sendPacketQ_.front();
 		sendPacketQ_.pop_front();
-	}
-
-	lock_.unlock();
-	lock_.release();
+	}			
 }
 
 
 //call by walker thread. so. important to managing share resource.
 void TcpChatClient::HandleWrite(boost::system::error_code error_code, size_t bytes_transferred)
 {
-	boost::mutex::scoped_lock lock_(mutex_);
+	//std::lock_guard<std::recursive_mutex> guard(mutex_);
+	std::unique_lock<std::recursive_mutex> guard(mutex_);
+
 	if (error_code)
 	{
 		if (error_code == boost::asio::error::eof)
@@ -162,8 +165,7 @@ void TcpChatClient::HandleRead(boost::system::error_code error_code, size_t byte
 		}
 
 		if (packetTotalDataSize > 0)
-		{
-			//cas?
+		{			
 			char tempBuff[MAX_RECEIVE_BUFFER_SIZE] = { 0, };
 			memcpy(&tempBuff[0], &packetBuffer[readDataSize], packetTotalDataSize);
 			memcpy(&packetBuffer[0], &tempBuff[0], packetTotalDataSize);
