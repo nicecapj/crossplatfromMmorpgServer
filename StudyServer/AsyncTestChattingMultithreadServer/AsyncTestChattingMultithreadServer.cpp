@@ -1,8 +1,11 @@
 // AsyncTestChattingMultithreadServer.cpp : Defines the entry point for the console application.
 //
 #include <iostream>
-#include <boost/thread.hpp>
+#include <thread>
 #include <memory>
+
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
 
 #include "TcpServer.h"
 #include "Logger.h"
@@ -19,14 +22,14 @@ int main()
 	server.Start();
 
 
-	std::vector<boost::thread> threads;
+	std::vector<std::thread> threads;
 
-	unsigned int hardwareThreadCount = boost::thread::hardware_concurrency();
+	unsigned int hardwareThreadCount = std::thread::hardware_concurrency();
 	const int MAX_THREAD = hardwareThreadCount * 2;	//good for multithread programming.
 
 	for (int i = 0; i < MAX_THREAD; ++i)
 	{		
-		threads.emplace_back(boost::thread(boost::bind(&boost::asio::io_service::run, &ios)));
+		threads.emplace_back(std::thread(boost::bind(&boost::asio::io_service::run, &ios)));				
 	}
 
 	ios.run();
