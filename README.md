@@ -43,3 +43,6 @@ https://github.com/google/glog
 
 log4cpp (log library)
 https://sourceforge.net/projects/log4cpp/files/
+
+mysql connector
+http://dev.mysql.com/downloads/connector/cpp/
