@@ -7,24 +7,25 @@
 class DatabaseManager
 {
 public:
-	int InitialzeDatabase()
+	bool InitialzeDatabase()
 	{
 		if (!mysql_init(&mysql_))
 		{
-			return ERROR;
+			return false;
 		}
 
+		//CREATE SCHEMA `test_mmo` DEFAULT CHARACTER SET utf8 ;
 		if (!mysql_real_connect(&mysql_, "127.0.0.1", "root", "1111", "TEST_MMO", 3306, nullptr, 0))
 		{
-			return ERROR;
+			return false;
 		}
 
 		if (mysql_select_db(&mysql_, "TEST_MMO"))
 		{
-			return ERROR;
+			return false;
 		}
 		
-		return TRUE;
+		return true;
 	}
 
 	void CloseDatabase()
@@ -45,7 +46,10 @@ private:
 int main()
 {
 	DatabaseManager dbmanager;	
-	dbmanager.InitialzeDatabase();
+	if (!dbmanager.InitialzeDatabase())
+		return;
+
+	dbmanager.CloseDatabase();
 
     return 0;
 }
