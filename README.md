@@ -35,11 +35,25 @@ ThirdParty\log4cpp\msvc10\log4cppLIB\Debug\log4cppD.lib
 
 copy *.lib to ThirdParty\Libs\win32
 
-add ";$(ProjectDir)\..\..\ThirdParty\Log4cpp\include" to include Directories
-add ";$(ProjectDir)\..\..\ThirdParty\log4cpp\lib\win32\" to Library Directories
+add "$(ProjectDir)\..\..\ThirdParty\Log4cpp\include" to include Directories
+add "$(ProjectDir)\..\..\TThirdParty\Libs\win32" to Library Directories
 ----------------------------------------------------------------------------------	
+5.11. googleUnitTest
+build library : ThirdParty\googletest\googletest\msvc\gtest.sln
+
+output
+ThirdParty\googletest\googletest\msvc\gtest\Debug\gtestd.lib
+ThirdParty\googletest\googletest\msvc\gtest\Release\gtest.lib
+
+copy *.lib to ThirdParty\Libs\win32
+
+add "$(ProjectDir)\..\..\ThirdParty\googletest\googletest\include" to include Directories
+add "$(ProjectDir)\..\..\ThirdParty\Libs\win32" to Library Directories
+
+add "gtest.lib" to Additional Dependencies.
 	
-	
+----------------------------------------------------------------------------------
+
 
 for use server(coming soon...)
 1. check google c++ coding convention
