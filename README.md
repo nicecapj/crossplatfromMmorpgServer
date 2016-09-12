@@ -20,9 +20,28 @@ for study
     5.6.AsyncTestChattingClient
     5.7.StudyServer
     5.8.StudyClient
+	5.9. MysqlDatabaseTest
+	5.10. log4cppTest
+	5.11. googleUnittest
 
 
-for use
+----------------------------------------------------------------------------------
+5.10. log4cppTest
+build library : ThirdParty\log4cpp\msvc10\msvc10.sln
+
+output
+ThirdParty\log4cpp\msvc10\log4cppLIB\Release\log4cppLIB.lib
+ThirdParty\log4cpp\msvc10\log4cppLIB\Debug\log4cppD.lib
+
+copy *.lib to ThirdParty\Libs\win32
+
+add ";$(ProjectDir)\..\..\ThirdParty\Log4cpp\include" to include Directories
+add ";$(ProjectDir)\..\..\ThirdParty\log4cpp\lib\win32\" to Library Directories
+----------------------------------------------------------------------------------	
+	
+	
+
+for use server(coming soon...)
 1. check google c++ coding convention
 2. study c++11/14
 3. boost library build
