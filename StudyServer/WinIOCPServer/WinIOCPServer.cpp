@@ -3,7 +3,20 @@
 
 #include "stdafx.h"
 #include <iostream>
+#include "Thread.h"
 
+class IOThread : public Thread
+{
+public:
+	virtual void Run()
+	{
+		//Thread::Run();
+		while (1)
+		{
+			std::cout << "IOThread : " << this->GetThreadID() << std::endl;
+		}		
+	}
+};
 
 DWORD __stdcall ThreadProc(LPVOID lpParameter)
 {
@@ -50,7 +63,18 @@ int main()
 		std::cout << "main thread\n" << std::endl;
 	}
 	
-	::WaitForMultipleObjects(5, threads, TRUE, INFINITY);
+	::WaitForMultipleObjects(5, threads, TRUE, (DWORD)INFINITY);
+
+
+	IOThread ioThread[5];
+	for (int i = 0; i < 5; ++i)
+	{
+		ioThread[i].Begin();
+	}	
+
+
+	getchar();
+
     return 0;
 }
 
