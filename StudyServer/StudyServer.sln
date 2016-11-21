@@ -27,6 +27,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "log4CppTest", "log4CppTest\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "googleUnitTest", "googleUnitTest\googleUnitTest.vcxproj", "{4F7A93EE-9C6E-4053-89DF-500556BD7756}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinIOCPServer", "WinIOCPServer\WinIOCPServer.vcxproj", "{DBEDDA68-53CC-4042-960D-31C5D025D1A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -131,6 +133,14 @@ Global
 		{4F7A93EE-9C6E-4053-89DF-500556BD7756}.Release|x64.Build.0 = Release|x64
 		{4F7A93EE-9C6E-4053-89DF-500556BD7756}.Release|x86.ActiveCfg = Release|Win32
 		{4F7A93EE-9C6E-4053-89DF-500556BD7756}.Release|x86.Build.0 = Release|Win32
+		{DBEDDA68-53CC-4042-960D-31C5D025D1A9}.Debug|x64.ActiveCfg = Debug|x64
+		{DBEDDA68-53CC-4042-960D-31C5D025D1A9}.Debug|x64.Build.0 = Debug|x64
+		{DBEDDA68-53CC-4042-960D-31C5D025D1A9}.Debug|x86.ActiveCfg = Debug|Win32
+		{DBEDDA68-53CC-4042-960D-31C5D025D1A9}.Debug|x86.Build.0 = Debug|Win32
+		{DBEDDA68-53CC-4042-960D-31C5D025D1A9}.Release|x64.ActiveCfg = Release|x64
+		{DBEDDA68-53CC-4042-960D-31C5D025D1A9}.Release|x64.Build.0 = Release|x64
+		{DBEDDA68-53CC-4042-960D-31C5D025D1A9}.Release|x86.ActiveCfg = Release|Win32
+		{DBEDDA68-53CC-4042-960D-31C5D025D1A9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
