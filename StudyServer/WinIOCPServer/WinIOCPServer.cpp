@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include "Thread.h"
+#include "IOCPServer.h"
 
 class IOThread : public Thread
 {
@@ -71,6 +72,9 @@ int main()
 	{
 		ioThread[i].Begin();
 	}	
+
+	IOCPServer server;
+	server.Initialize(4444);
 
 
 	getchar();
