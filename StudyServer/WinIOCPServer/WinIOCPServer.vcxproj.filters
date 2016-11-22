@@ -30,6 +30,9 @@
     <ClInclude Include="ThreadManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ScopeLock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ThreadManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScopeLock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
