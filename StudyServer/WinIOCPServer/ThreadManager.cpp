@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "ThreadManager.h"
 
-
-ThreadManager ThreadManager::instance_;
-
 void ThreadManager::Join()
 {
 	auto iter = threadHandleList_.begin();
@@ -28,11 +25,6 @@ HANDLE ThreadManager::spawn(LPTHREAD_START_ROUTINE startAddress, LPVOID lpParam,
 
 	return handle;
 }
-
-ThreadManager::ThreadManager()
-{
-}
-
 
 ThreadManager::~ThreadManager()
 {

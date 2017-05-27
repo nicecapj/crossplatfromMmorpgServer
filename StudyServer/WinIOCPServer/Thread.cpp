@@ -18,7 +18,7 @@ void Thread::Begin()
 	if (isStarted)
 		return;
 
-	threadHandle_ = ThreadManager::GetInstance()->spawn(ThreadProc, this, &id);
+	threadHandle_ = ThreadManager::Get()->spawn(ThreadProc, this, &id);
 
 	isStarted = true;
 }
@@ -34,8 +34,8 @@ DWORD Thread::ThreadProc(LPVOID lpParam)
 
 	if (thread != nullptr)
 	{
-		thread->Run();
 	}
+		thread->Run();
 
 	return 0;
 }

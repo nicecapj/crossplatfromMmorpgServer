@@ -1,12 +1,2 @@
-/StudyServer/*.opensdf
-/StudyServer/*.sdf
-/StudyServer/ipch/STUDYSERVER-c8417219/*.ipch
-ThirdParty/boost_1_61_0/bin.v2/*
-*.tlog
-*.ipdb
-*.iobj
-*.rsp
-*.ipch
 *.idb
-*.db
-*.opendb
+*.tlog

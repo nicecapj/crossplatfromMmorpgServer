@@ -5,10 +5,12 @@ public:
 	IOCPServer();
 	~IOCPServer();
 
-	void Initialize(short port);
+	bool Initialize(HANDLE iocp, short port);
+	void OnTick();
 	void Shutdown();
 
 private:
-	SOCKET tcpListenSocket_;
+	SOCKET tcpListenSocket_;	
+	HANDLE iocp_;
 };
 
