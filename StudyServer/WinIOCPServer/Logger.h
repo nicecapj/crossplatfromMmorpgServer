@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <string>
 
+//todo : change log4cpp or gLog
 class Logger
 {
 public:

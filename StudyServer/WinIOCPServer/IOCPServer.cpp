@@ -43,7 +43,6 @@ bool IOCPServer::Initialize(HANDLE iocp, short port)
 		return false;
 	}
 
-
 	SOCKADDR_IN addr;
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
@@ -69,6 +68,7 @@ bool IOCPServer::Initialize(HANDLE iocp, short port)
 
 void IOCPServer::OnTick()
 {
+	//server block until new client connected.
 	SOCKET acceptedSocket = accept(tcpListenSocket_, NULL, NULL);
 	if (acceptedSocket == INVALID_SOCKET)
 	{
@@ -78,10 +78,13 @@ void IOCPServer::OnTick()
 	auto client = ClientManager::Get()->CreateClient(acceptedSocket);
 	if (client != nullptr)
 	{
-		client->OnConnected(acceptedSocket);
+		if (!client->OnConnected(acceptedSocket))
+		{
+			client->Disconnect();
+		}
 	}
 
-
+	ClientManager::Get()->FlushClientSend();
 }
 
 

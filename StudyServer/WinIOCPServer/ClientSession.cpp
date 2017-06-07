@@ -8,6 +8,7 @@ void ClientSession::OnTick()
 
 bool ClientSession::OnConnected(SOCKET socket)
 {	
+	std::lock_guard<std::mutex> lock(clientLock_);
 	socket_ = socket;
 	u_long arg = 1;
 	ioctlsocket(socket_, FIONBIO, &arg);
@@ -57,6 +58,32 @@ bool ClientSession::PostReceive()
 bool ClientSession::IsConnected()
 {
 	return false;
+}
+
+void ClientSession::Disconnect()
+{
+	std::lock_guard<std::mutex> lock(clientLock_);
+
+	if (!IsConnected())
+		return;
+
+	LINGER lingerOption;
+	lingerOption.l_onoff = 1;
+	lingerOption.l_linger = 0;
+
+	if (SOCKET_ERROR == setsockopt(socket_, SOL_SOCKET, SO_LINGER, (char*)&lingerOption, sizeof(LINGER)))
+	{		
+		return;
+	}
+
+	closesocket(socket_);
+	
+	isConnected_ = false;
+}
+
+SOCKET ClientSession::GetSocket() const
+{
+	return socket_;	
 }
 
 void CALLBACK RecvCompletion(IN DWORD dwError, IN DWORD cbTransferred, IN LPWSAOVERLAPPED lpOverlapped, IN DWORD dwFlags)
